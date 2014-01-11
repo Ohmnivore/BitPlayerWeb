@@ -25,6 +25,7 @@ package
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
+	import flash.system.Security;
 
 	public class Main extends Sprite
 	{
@@ -60,6 +61,9 @@ package
 		
 		public function Main()
 		{
+			Security.allowDomain("*");
+			Security.allowInsecureDomain("*");
+			
 			//Flod
 			loader = new FileLoader;
 			player = loader.load(new TESTFILE as ByteArray);
