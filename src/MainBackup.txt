@@ -1,7 +1,6 @@
 package 
 {
 	import com.stimuli.loading.BulkProgressEvent;
-	import feathers.controls.Alert;
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
 	import feathers.controls.Label;
@@ -10,13 +9,11 @@ package
 	import feathers.controls.Slider;
 	import feathers.controls.TextInput;
 	import feathers.core.ITextRenderer;
-	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	import feathers.layout.ViewPortBounds;
 	import feathers.themes.MetalWorksMobileTheme;
 	import feathers.controls.text.TextFieldTextRenderer;
-	import flash.events.ErrorEvent;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.utils.ByteArray;
@@ -67,8 +64,11 @@ package
 		
 		public function Main()
 		{
+			Security.allowDomain("*");
+			Security.allowInsecureDomain("*");
 			context = new LoaderContext(false);
-			
+			//new Console;
+			//Console.log("lol");
 			//Flod
 			loader = new FileLoader;
 			player = loader.load(new TESTFILE as ByteArray);
@@ -76,7 +76,7 @@ package
 			//BulkLoader
 			dloader = new BulkLoader("track");
 			
-			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
 		protected function addedToStageHandler(event:Event):void
@@ -111,6 +111,7 @@ package
 			cont.layout = ctrllay;
 			
 			addChild(gcont);
+			//gcont.addChild(cont);
 			
 			//Btns
 			rewbtn = new Button();
@@ -164,7 +165,6 @@ package
 			
 			gcont.addChild(url);
 			url.text = "Download URL";
-			//url.isEditable = false;
 			url.validate();
 			
 			gcont.addChild(bar);
@@ -205,7 +205,7 @@ package
 		
 		protected function help(event:Event):void
 		{
-			navigateToURL(new URLRequest("https://github.com/Ohmnivore/BitPlayerWeb"), '_self');
+			navigateToURL(new URLRequest("https://github.com/Ohmnivore/HeadRush"), '_self');
 		}
 		
 		protected function fforward(event:Event):void
@@ -231,24 +231,10 @@ package
 			
 			dloader.get("gettrack").addEventListener(Event.COMPLETE, onTrackLoaded);
 			dloader.get("gettrack").addEventListener(BulkLoader.PROGRESS, onProgress);
-			dloader.get("gettrack").addEventListener(BulkLoader.ERROR,dlError);
 			
 			dloader.start();
 			
 			bar.visible = true;
-		}
-		
-		function dlError(evt:ErrorEvent):void
-		{
-			trace (evt); // outputs more information
-			var cont:Label = new Label;
-			cont.text = evt.text;
-			var pop:Alert = Alert.show(evt.text, "Error on download", new ListCollection(
-			[
-				{ label: "OK" }
-			]));
-			dloader.removeAll();
-			bar.visible = false;
 		}
 		
 		protected function onProgress(e:BulkProgressEvent):void
@@ -263,9 +249,7 @@ package
 			{
 				var track = dloader.getContent("gettrack");
 				
-				try { player.stop(); }
-				catch (e) { }
-				
+				player.stop();
 				loader = new FileLoader;
 				player = loader.load(track);
 				dloader.removeAll();
@@ -276,15 +260,13 @@ package
 			
 			catch (e:Error)
 			{
-				var pop:Alert = Alert.show("Unsupported file type", 
-					"Error on play", new ListCollection(
-				[
-					{ label: "OK" }
-				]));
-				dloader.removeAll();
+				Console.log(e);
+				var cont:Label = new Label;
+				cont.text = "An error occured.";
+				var pop:Callout = Callout.show(cont, go);
 				
-				try { player.stop(); }
-				catch (e) {}
+				player.stop();
+				dloader.removeAll();
 				playing = false;
 			}
 			

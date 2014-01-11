@@ -18,7 +18,7 @@ package
 
 	import starling.core.Starling;
 
-	[SWF(width="480",height="320",frameRate="60",backgroundColor="#4a4137")]
+	[SWF(width="620",height="320",frameRate="60",backgroundColor="#4a4137")]
 	public class HelloWorld extends Sprite
 	{
 		public function HelloWorld()
