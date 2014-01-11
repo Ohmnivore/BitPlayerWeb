@@ -53,3 +53,8 @@ has to do with my code is, I guess.
 
 http://creativecommons.org/licenses/by-nc-sa/3.0/
 http://www.gnu.org/licenses/gpl-3.0.html
+
+https://github.com/photonstorm/Flod
+https://github.com/joshtynjala/feathers
+https://github.com/PrimaryFeather/Starling-Framework
+https://github.com/arthur-debert/BulkLoader
